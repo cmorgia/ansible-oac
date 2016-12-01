@@ -1,0 +1,47 @@
+---
+
+- name: Create Ansible local facts directory
+  file:
+    path: /etc/ansible/facts.d
+    state: directory
+  become: yes
+  become_user: root
+
+- name: Create essential directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ oracle.user }}"
+    group: "{{ oracle.group }}"
+  with_items:
+    - "{{ osb.logs_dir }}"
+    - "{{ osb.scripts_dir }}"
+    - "{{ osb.config_dir }}"
+
+- name: Copy RCU passwords file
+  template:
+    src: rcu_passwords.j2
+    dest: "{{ oracle.home_dir }}/.rcu_passwords"
+
+- name: Copy WLST scripts
+  copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ oracle.user }}"
+    group: "{{ oracle.group }}"
+    mode: 0750
+  with_items:
+    - { src: osb_create_basic_domain.py, dest: "{{ osb.scripts_dir }}/osb_create_basic_domain.py" }
+    - { src: osb_create_basic_domain_service.sh, dest: "{{ osb.scripts_dir }}/osb_create_basic_domain_service.sh" }
+    - { src: osb_control_admin_server.py, dest: "{{ osb.scripts_dir }}/osb_control_admin_server.py" }
+    - { src: osb_control_admin_server.sh, dest: "{{ osb.scripts_dir }}/osb_control_admin_server.sh" }
+    - { src: osb_control_managed_servers.py, dest: "{{ osb.scripts_dir }}/osb_control_managed_servers.py" }
+    - { src: osb_control_managed_servers.sh, dest: "{{ osb.scripts_dir }}/osb_control_managed_servers.sh" }
+    - { src: osb_start_nodemanager.sh, dest: "{{ osb.scripts_dir }}/osb_start_nodemanager.sh" }
+    - { src: osb_import_project.py, dest: "{{ osb.scripts_dir }}/osb_import_project.py" }
+    - { src: osb_import_project.sh, dest: "{{ osb.scripts_dir }}/osb_import_project.sh" }
+
+- name: Prepare OSB installation response file
+  template:
+    src: osb.rsp.j2
+    dest: "{{ osb.install_response_file }}"

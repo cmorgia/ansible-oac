@@ -1,0 +1,33 @@
+---
+
+- hosts: ansible-vm
+  environment:
+    JAVA_HOME: /usr/java/default
+  roles:
+    - role: ansible-java
+      java_version: 8
+      java_jdk_type: 'oracle'
+      oracle_jdk_rpm_package: 'jdk-8u60-linux-x64.rpm'
+      rpm_download_directory: '/files'
+      java_set_as_default: true
+
+    - role: ansible-weblogic
+      weblogic_jar_path: '/files/fmw_12.2.1.2.0_infrastructure.jar'
+      weblogic_quick_installation: false
+      weblogic_installation_type: 'Fusion Middleware Infrastructure'
+      weblogic_domain_name: 'osb_domain'
+
+    - role: ansible-osb
+      osb_jar_path: '/files/fmw_12.2.1.2.0_osb.jar'
+      oracle_db_address: '192.168.33.101'
+      oracle_db_sid: 'orcl'
+      oracle_db_password: 'password'
+      osb_admin_server_listen_address: '192.168.33.101'
+      osb_managed_server_listen_address: '192.168.33.101'
+
+    - role: ansible-oag
+      oag_prefix: "{{ middleware_home_dir }}"
+      oag_username: 'admin'
+      oag_password: 'password'
+      oag_hostname: '192.168.33.101'
+      oag_port: '8090'
