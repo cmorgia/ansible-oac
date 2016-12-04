@@ -9,15 +9,16 @@ oracle:
   home_dir: '/home/oracle'
 
 #
-# OSB parameters
+# oac parameters
 #
-osb_already_installed: false
-osb_schemas_created: false
-osb_already_configured: false
+oac_already_installed: false
+oac_patched: false
+oac_schemas_created: false
+oac_already_configured: false
 
-osb:
+oac:
   supported_versions: ['12c']
-  install_response_file: '/tmp/osb.rsp'
+  install_response_file: '/tmp/oac.rsp'
   logs_dir: "{{ oracle.home_dir }}/logs"
   scripts_dir: "{{ oracle.home_dir }}/scripts"
   config_dir: "{{ oracle.home_dir }}/config"
@@ -25,9 +26,9 @@ osb:
 #
 # Default JVM Heap size for AdminServer, Managed Servers and Coherence
 #
-osb_admin_server_heap_size: '1024m'
-osb_admin_server_perm_size: '512m'
-osb_managed_server_heap_size: '1024m'
-osb_managed_server_perm_size: '512m'
-osb_coherence_server_heap_size: '256m'
-osb_coherence_server_perm_size: '128m'
+oac_admin_server_heap_size: '1024m'
+oac_admin_server_perm_size: '512m'
+oac_managed_server_heap_size: '1024m'
+oac_managed_server_perm_size: '512m'
+oac_coherence_server_heap_size: '256m'
+oac_coherence_server_perm_size: '128m'

@@ -11,21 +11,21 @@
     owner: "{{ oracle.user }}"
     group: "{{ oracle.group }}"
   with_items:
-    - { src: osb_set_environment_variables.sh.j2 , dest: "{{ osb.scripts_dir }}/osb_set_environment_variables.sh" }
-    - { src: osb_environment.properties.j2, dest: "{{ osb.config_dir }}/osb_environment.properties" }
+    - { src: oac_set_environment_variables.sh.j2 , dest: "{{ oac.scripts_dir }}/oac_set_environment_variables.sh" }
+    - { src: oac_environment.properties.j2, dest: "{{ oac.config_dir }}/oac_environment.properties" }
 
 #
-# Create and configure the OSB cluster
+# Create and configure the OAC cluster
 #
 
-- name: Create the OSB cluster
-  shell: "{{ osb.scripts_dir }}/osb_create_basic_domain_service.sh > {{ osb.logs_dir }}/create_osb_cluster_$(date +'%F').log 2>&1"
+- name: Create the OAC cluster
+  shell: "{{ oac.scripts_dir }}/oac_create_basic_domain_service.sh > {{ oac.logs_dir }}/create_oac_cluster_$(date +'%F').log 2>&1"
   register: create_cluster_cmd
 
 
 - name: Create AdminServer securtiy directory
   file:
-    path: "{{ osb_domain_home }}/servers/AdminServer/security"
+    path: "{{ oac_domain_home }}/servers/AdminServer/security"
     state: directory
     owner: "{{ oracle.user }}"
     group: "{{ oracle.group }}"
@@ -37,9 +37,9 @@
     owner: "{{ oracle.user }}"
     group: "{{ oracle.group }}"
   with_items:
-    - { src: boot.properties.j2, dest: "{{ osb_domain_home }}/servers/AdminServer/security/boot.properties" }
-    - { src: nodemanager.properties.j2, dest: "{{ osb_nodemanager_home }}/nodemanager.properties" }
-    - { src: setUserOverrides.sh.j2, dest: "{{ osb_domain_home }}/bin/setUserOverrides.sh" }
+    - { src: boot.properties.j2, dest: "{{ oac_domain_home }}/servers/AdminServer/security/boot.properties" }
+    - { src: nodemanager.properties.j2, dest: "{{ oac_nodemanager_home }}/nodemanager.properties" }
+    - { src: setUserOverrides.sh.j2, dest: "{{ oac_domain_home }}/bin/setUserOverrides.sh" }
 
 #
 # Configure the Nodemanager as a systemd service
@@ -63,6 +63,6 @@
   become_user: root
   
 - set_fact:
-    osb_already_configured: true
+    oac_already_configured: true
   when: create_cluster_cmd.rc == 0
 

@@ -1,10 +1,10 @@
 #
-# This is a WLST script to create and configure an OSB cluster.
+# This is a WLST script to create and configure an OAC cluster.
 #
 
 print '[INFO] Setting parameters..'
 machines=cluster_nodes.split(",")
-server_groups=['OSB-MGD-SVRS-COMBINED']
+server_groups=['OER-MGD-SVRS']
 data_source_driver='oracle.jdbc.OracleDriver'
 data_source_test='SQL SELECT 1 FROM DUAL'
 
@@ -16,7 +16,7 @@ nodemanager_home = os.getenv('NODE_MANAGER_HOME')
 weblogic_home = os.getenv('WEBLOGIC_HOME')
 
 weblogic_template = middleware_home + '/wlserver/common/templates/wls/wls.jar'
-osb_template = middleware_home + '/osb/common/templates/wls/oracle.apimanager_template.jar'
+oac_template = middleware_home + '/oer/common/templates/wls/oracle.oer.oac_server_wls_template_12.1.3.jar'
 
 print "[INFO] Create domain '%s' " % domain_name
 readTemplate(weblogic_template)
@@ -38,72 +38,8 @@ closeTemplate()
 print '[INFO] Read domain'
 readDomain(domain_configuration_home)
 
-print '[INFO] Add OSB tempalte..'
-addTemplate(osb_template)
-
-print "[WARN] Remove default server 'osb_server1' created by the OSB tempalte"
-delete('osb_server1', 'Server')
-
-print '[INFO] Create OSB cluster'
-cluster = create(cluster_name,'Cluster')
-cluster.setClusterMessagingMode('unicast')
-
-print '[INFO] Creating machines and servers..'
-for i in range(len(machines)):
-    print "[INFO] Creating machine_%s" % repr(i)
-    machine = create(machines[i],'UnixMachine')
-    machine.setPostBindUIDEnabled(java.lang.Boolean('true'))
-    machine.setPostBindUID(oracle_user_name)
-    machine.setPostBindGIDEnabled(java.lang.Boolean('true'))
-    machine.setPostBindGID(oracle_group_name)
-    cd('/Machine/' + machine.getName())
-    nodemanager = create(machine.getName(),'NodeManager')
-    nodemanager.setListenAddress(machines[i])
-    nodemanager.setNMType(nodemanager_connection_mode)
-    cd('/')
-    for j in range(int(managed_servers_per_machine)):
-        managed_server_listen_port = int(managed_server_listen_port_start) + j
-        managed_server_name = 'server' + repr(j) + '_' + machines[i]
-        print "[INFO] [%s] Creating server.." % managed_server_name
-        server = create(managed_server_name,'Server')
-        server.setListenPort(managed_server_listen_port)
-        server.setListenAddress(managed_server_listen_address)
-        server.setCluster(cluster)
-        server.setMachine(machine)
-        cd('Servers/' + managed_server_name)
-        print "[INFO] [%s] Configure overload protection"
-        overload_protection = create(managed_server_name,'OverloadProtection')
-        overload_protection.setFailureAction('force-shutdown')
-        overload_protection.setPanicAction('system-exit')
-        cd('OverloadProtection/' + managed_server_name)
-        create(managed_server_name,'ServerFailureTrigger')
-        cd('../..')
-        overload_protection.getServerFailureTrigger().setMaxStuckThreadTime(600)
-        overload_protection.getServerFailureTrigger().setStuckThreadCount(0)
-        print "[INFO] [%s] Configure logging" % managed_server_name
-        server_log = create(managed_server_name,'Log')
-        server_log.setRotationType('bySize')
-        server_log.setFileMinSize(5000)
-        server_log.setNumberOfFilesLimited(java.lang.Boolean('true'))
-        server_log.setFileCount(10)
-        server_log.setLogFileSeverity('Info')
-        server_log.setStdoutSeverity('Error')
-        server_log.setDomainLogBroadcastSeverity('Error')
-        web_server = create(managed_server_name,'WebServer')
-        cd('WebServer/' + managed_server_name)
-        create(managed_server_name,'WebServerLog')
-        cd('../..')
-        web_server.getWebServerLog().setLoggingEnabled(java.lang.Boolean('false'))
-        web_server.getWebServerLog().setRotationType('bySize')
-        web_server.getWebServerLog().setFileMinSize(5000)
-        web_server.getWebServerLog().setNumberOfFilesLimited(java.lang.Boolean('true'))
-        web_server.getWebServerLog().setFileCount(10)
-        cd('../..')
-        print "[INFO] [%s] Set server group" % managed_server_name
-        setServerGroups(managed_server_name, server_groups)
-        print "[INFO] [%s] Assign server to cluster '%s'" % (managed_server_name, cluster_name)
-        assign('Server', managed_server_name, 'Cluster', cluster_name)
-        cd('/')
+print '[INFO] Add OAC tempalte..'
+addTemplate(oac_template)
 
 print "[INFO] Retarget JMS resources.."
 filestores = cmo.getFileStores()

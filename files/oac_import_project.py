@@ -51,7 +51,7 @@ def importSBConfigFile(config_mbean):
         alsbImportPlan.setPreserveExistingEnvValues(true)
         importResult = config_mbean.importUploaded(alsbImportPlan)
     else:
-        print "[INFO] OSB project '%s' will get overlaid" % sbconfig_project
+        print "[INFO] OAC project '%s' will get overlaid" % sbconfig_project
         alsbJarInfo = config_mbean.getImportJarInfo()
         print "[INFO] Use default import plan"
         alsbImportPlan = alsbJarInfo.getDefaultImportPlan()
@@ -117,14 +117,14 @@ def main():
         sessionName = String("Customization" + Long(System.currentTimeMillis()).toString())
         SessionMBean = findService("SessionManagement", "com.bea.wli.sb.management.configuration.SessionManagementMBean")
         SessionMBean.createSession(sessionName)
-        OSBConfigurationMBean = findService(String("ALSBConfiguration.").concat(sessionName), "com.bea.wli.sb.management.configuration.ALSBConfigurationMBean")
-        # Import OSB project(s) from an SB jar file
+        OACConfigurationMBean = findService(String("ALSBConfiguration.").concat(sessionName), "com.bea.wli.sb.management.configuration.ALSBConfigurationMBean")
+        # Import OAC project(s) from an SB jar file
         try:
-            importSBConfigFile(OSBConfigurationMBean)
+            importSBConfigFile(OACConfigurationMBean)
             # Apply XML customization file
-            applyCustomizationFile(OSBConfigurationMBean)
+            applyCustomizationFile(OACConfigurationMBean)
             # Apply changes and save the configuration session
-            SessionMBean.activateSession(sessionName, "Import OSB project")
+            SessionMBean.activateSession(sessionName, "Import OAC project")
             print "[INFO] Successfully Completed importation and customization"
         except Exception, error:
 	    print error

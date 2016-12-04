@@ -1,8 +1,8 @@
 ---
 
 - name: Install Oracle Service Bus
-  shell: "java -Xms1024m -Xmx1024m -jar {{ osb_jar_path }} -silent -responseFile {{ osb.install_response_file }} > {{ osb.logs_dir }}/osb_installation_$(date +'%F').log 2>&1"
+  shell: "java -Xms1024m -Xmx1024m -jar {{ oac_jar_path }} -silent -responseFile {{ oac.install_response_file }} > {{ oac.logs_dir }}/oac_installation_$(date +'%F').log 2>&1"
 
 - set_fact:
-    osb_already_installed: true
-  when: osb_home.stat.exists
+    oac_already_installed: true
+  when: oac_home.stat.exists

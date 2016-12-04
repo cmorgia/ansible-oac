@@ -5,12 +5,12 @@ set -e
 SCRIPT=$(readlink -f $0)
 SCRIPT_PATH=$(dirname $SCRIPT)
 
-source ${SCRIPT_PATH}/osb_set_environment_variables.sh
+source ${SCRIPT_PATH}/oac_set_environment_variables.sh
 
 create_basic_domain() {
 	${FUSION_MIDDLEWARE_HOME}/common/bin/wlst.sh \
-	  -loadProperties ${SCRIPT_PATH}/../config/osb_environment.properties \
-		${SCRIPT_PATH}/osb_create_basic_domain.py
+	  -loadProperties ${SCRIPT_PATH}/../config/oac_environment.properties \
+		${SCRIPT_PATH}/oac_create_basic_domain.py
 }
 
 change_memory_settings() {

@@ -15,15 +15,15 @@
       weblogic_jar_path: '/files/fmw_12.2.1.2.0_infrastructure.jar'
       weblogic_quick_installation: false
       weblogic_installation_type: 'Fusion Middleware Infrastructure'
-      weblogic_domain_name: 'osb_domain'
+      weblogic_domain_name: 'oac_domain'
 
-    - role: ansible-osb
-      osb_jar_path: '/files/fmw_12.2.1.2.0_osb.jar'
+    - role: ansible-oac
+      oac_jar_path: '/files/fmw_12.2.1.2.0_oac.jar'
       oracle_db_address: '192.168.33.101'
       oracle_db_sid: 'orcl'
       oracle_db_password: 'password'
-      osb_admin_server_listen_address: '192.168.33.101'
-      osb_managed_server_listen_address: '192.168.33.101'
+      oac_admin_server_listen_address: '192.168.33.101'
+      oac_managed_server_listen_address: '192.168.33.101'
 
     - role: ansible-oag
       oag_prefix: "{{ middleware_home_dir }}"

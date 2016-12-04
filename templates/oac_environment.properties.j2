@@ -1,0 +1,47 @@
+#
+# This file is managed by Ansible
+#
+
+#
+# OAC cluster configuration
+#
+oracle_user_name=oracle
+oracle_group_name=oinstall
+domain_name={{ oac_domain_name }}
+cluster_name={{ oac_cluster_name }}
+cluster_nodes={{ oac_cluster_nodes | join(',') }}
+managed_servers_per_machine={{ oac_managed_servers_per_machine }}
+managed_server_listen_port_start={{ oac_managed_server_listen_port_start }}
+managed_server_listen_address={{ oac_managed_server_listen_address }}
+
+#
+# Oracle database connection parameters
+#
+data_source_url=jdbc:oracle:thin:@//{{ oracle_db_address }}:{{ oracle_db_port }}/{{ oracle_db_sid }}
+data_source_user_prefix={{ oac_rcu_schema_prefix }}
+data_source_password={{ oracle_db_password }}
+
+#
+# Node Manager configuration
+#
+nodemanager_listen_address={{ oac_nodemanager_listen_address }}
+nodemanager_username={{ oac_admin_username }}
+nodemanager_password={{ oac_admin_password }}
+nodemanager_listen_port={{ oac_nodemanager_listen_port }}
+nodemanager_connection_mode={{ oac_nodemanager_connection_mode }}
+
+#
+# AdminServer configuration
+#
+admin_server_name={{ oac_admin_server_name }}
+admin_server_listen_address={{ oac_admin_server_listen_address }}
+admin_server_listen_port={{ oac_admin_server_listen_port }}
+admin_username={{ oac_admin_username }}
+admin_password={{ oac_admin_password }}
+
+#
+# Import OAC project options
+#
+sbconfig_jar_file={{ oac.config_dir }}/sbconfig.jar
+sbconfig_customization_file={{ oac.config_dir }}/ALSBCustomizationFile.xml
+sbconfig_project={{ oac_sbconfig_project }}

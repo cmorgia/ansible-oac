@@ -14,9 +14,9 @@
     owner: "{{ oracle.user }}"
     group: "{{ oracle.group }}"
   with_items:
-    - "{{ osb.logs_dir }}"
-    - "{{ osb.scripts_dir }}"
-    - "{{ osb.config_dir }}"
+    - "{{ oac.logs_dir }}"
+    - "{{ oac.scripts_dir }}"
+    - "{{ oac.config_dir }}"
 
 - name: Copy RCU passwords file
   template:
@@ -31,17 +31,17 @@
     group: "{{ oracle.group }}"
     mode: 0750
   with_items:
-    - { src: osb_create_basic_domain.py, dest: "{{ osb.scripts_dir }}/osb_create_basic_domain.py" }
-    - { src: osb_create_basic_domain_service.sh, dest: "{{ osb.scripts_dir }}/osb_create_basic_domain_service.sh" }
-    - { src: osb_control_admin_server.py, dest: "{{ osb.scripts_dir }}/osb_control_admin_server.py" }
-    - { src: osb_control_admin_server.sh, dest: "{{ osb.scripts_dir }}/osb_control_admin_server.sh" }
-    - { src: osb_control_managed_servers.py, dest: "{{ osb.scripts_dir }}/osb_control_managed_servers.py" }
-    - { src: osb_control_managed_servers.sh, dest: "{{ osb.scripts_dir }}/osb_control_managed_servers.sh" }
-    - { src: osb_start_nodemanager.sh, dest: "{{ osb.scripts_dir }}/osb_start_nodemanager.sh" }
-    - { src: osb_import_project.py, dest: "{{ osb.scripts_dir }}/osb_import_project.py" }
-    - { src: osb_import_project.sh, dest: "{{ osb.scripts_dir }}/osb_import_project.sh" }
+    - { src: oac_create_basic_domain.py, dest: "{{ oac.scripts_dir }}/oac_create_basic_domain.py" }
+    - { src: oac_create_basic_domain_service.sh, dest: "{{ oac.scripts_dir }}/oac_create_basic_domain_service.sh" }
+    - { src: oac_control_admin_server.py, dest: "{{ oac.scripts_dir }}/oac_control_admin_server.py" }
+    - { src: oac_control_admin_server.sh, dest: "{{ oac.scripts_dir }}/oac_control_admin_server.sh" }
+    - { src: oac_control_managed_servers.py, dest: "{{ oac.scripts_dir }}/oac_control_managed_servers.py" }
+    - { src: oac_control_managed_servers.sh, dest: "{{ oac.scripts_dir }}/oac_control_managed_servers.sh" }
+    - { src: oac_start_nodemanager.sh, dest: "{{ oac.scripts_dir }}/oac_start_nodemanager.sh" }
+    - { src: oac_import_project.py, dest: "{{ oac.scripts_dir }}/oac_import_project.py" }
+    - { src: oac_import_project.sh, dest: "{{ oac.scripts_dir }}/oac_import_project.sh" }
 
-- name: Prepare OSB installation response file
+- name: Prepare OAC installation response file
   template:
-    src: osb.rsp.j2
-    dest: "{{ osb.install_response_file }}"
+    src: oac.rsp.j2
+    dest: "{{ oac.install_response_file }}"

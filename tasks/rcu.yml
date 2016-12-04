@@ -1,37 +1,37 @@
 ---
 
 #
-# Drop OSB schemas tasks
+# Drop OAC schemas tasks
 #
 
-- name: Purge OSB schemas
-  shell: "{{ middleware_home_dir }}/oracle_common/bin/rcu -silent -dropRepository -databaseType ORACLE -connectString {{ oracle_db_address }}:{{ oracle_db_port }}:{{ oracle_db_sid }} -dbUser {{ oracle_db_user }} -dbRole {{ oracle_db_role }} -schemaPrefix {{ osb_rcu_schema_prefix }} -component {{ osb_rcu_components | join(' -component ') }} -f <  {{ oracle.home_dir }}/.rcu_passwords > {{ osb.logs_dir }}/purge_osb_schemas_$(date +'%F').log 2>&1"
+- name: Purge OAC schemas
+  shell: "{{ middleware_home_dir }}/oracle_common/bin/rcu -silent -dropRepository -databaseType ORACLE -connectString {{ oracle_db_address }}:{{ oracle_db_port }}:{{ oracle_db_sid }} -dbUser {{ oracle_db_user }} -dbRole {{ oracle_db_role }} -schemaPrefix {{ oac_rcu_schema_prefix }} -component {{ oac_rcu_components | join(' -component ') }} -f <  {{ oracle.home_dir }}/.rcu_passwords > {{ oac.logs_dir }}/purge_oac_schemas_$(date +'%F').log 2>&1"
   register: rcu_drop_cmd
-  when: osb_schemas_created
+  when: oac_schemas_created
   tags:
-    - osb-purge-db-schemas
+    - oac-purge-db-schemas
 
 - set_fact:
-    osb_schemas_created: false
+    oac_schemas_created: false
   when: (rcu_drop_cmd is defined) and (not rcu_drop_cmd.rc)
   tags:
-    - osb-purge-db-schemas
+    - oac-purge-db-schemas
 
 #
-# Create OSB schemas tasks
+# Create OAC schemas tasks
 #
 
-- name: Create OSB schemas
-  shell: "{{ middleware_home_dir }}/oracle_common/bin/rcu -silent -createRepository -databaseType ORACLE -connectString {{ oracle_db_address }}:{{ oracle_db_port }}:{{ oracle_db_sid }} -dbUser {{ oracle_db_user }} -dbRole {{ oracle_db_role }} -schemaPrefix {{ osb_rcu_schema_prefix }} -useSamePasswordForAllSchemaUsers true -component {{ osb_rcu_components | join(' -component ') }} -f <  {{ oracle.home_dir }}/.rcu_passwords > {{ osb.logs_dir }}/create_osb_schemas_$(date +'%F').log 2>&1"
+- name: Create OAC schemas
+  shell: "{{ middleware_home_dir }}/oracle_common/bin/rcu -silent -createRepository -databaseType ORACLE -connectString {{ oracle_db_address }}:{{ oracle_db_port }}:{{ oracle_db_sid }} -dbUser {{ oracle_db_user }} -dbRole {{ oracle_db_role }} -schemaPrefix {{ oac_rcu_schema_prefix }} -useSamePasswordForAllSchemaUsers true -component {{ oac_rcu_components | join(' -component ') }} -f <  {{ oracle.home_dir }}/.rcu_passwords > {{ oac.logs_dir }}/create_oac_schemas_$(date +'%F').log 2>&1"
   environment:
     JAVA_HOME: /usr/java/default
   register: rcu_create_cmd
-  when: not osb_schemas_created
+  when: not oac_schemas_created
   tags:
-    - osb-create-db-schemas
+    - oac-create-db-schemas
 
 - set_fact:
-    osb_schemas_created: true
+    oac_schemas_created: true
   when: (rcu_create_cmd is defined) and (not rcu_create_cmd.rc)
   tags:
-    - osb-create-db-schemas
+    - oac-create-db-schemas

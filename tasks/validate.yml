@@ -11,13 +11,13 @@
 
 - name: Check if Oracle Service Bus version is supported
   fail:
-    msg: "OSB version '{{ osb_version }}' is not valide. Supported version is '12c' !"
-  when: osb_version not in osb.supported_versions
+    msg: "OAC version '{{ oac_version }}' is not valide. Supported version is '12c' !"
+  when: oac_version not in oac.supported_versions
 
-- name: Check if WebLogic and OSB versions are compatibles
+- name: Check if WebLogic and OAC versions are compatibles
   fail:
-    msg: "OSB version '{{ osb_version }}' is not compatible with WLS version '{{ result.ansible_facts.ansible_local.weblogic.wls.version }}' !"
-  when: result.ansible_facts.ansible_local.weblogic.wls.version != osb_version
+    msg: "OAC version '{{ oac_version }}' is not compatible with WLS version '{{ result.ansible_facts.ansible_local.weblogic.wls.version }}' !"
+  when: result.ansible_facts.ansible_local.weblogic.wls.version != oac_version
 
 #
 # Check ressources existance
@@ -34,49 +34,49 @@
     msg: "The WebLogic home directory didn't exist '{{ middleware_home_dir }}/wlserver' !"
   when: not wls_home.stat.exists
 
-- name: Check if OSB is already installed
+- name: Check if OAC is already installed
   stat:
-    path: "{{ middleware_home_dir }}/osb"
-  register: osb_home
+    path: "{{ middleware_home_dir }}/oac"
+  register: oac_home
   become: yes
   become_user: "{{ oracle.user }}"
 
 - debug:
-    msg: "Oracle Service Bus is already installed in '{{ middleware_home_dir }}/osb'"
-  when: osb_home.stat.exists
+    msg: "Oracle Service Bus is already installed in '{{ middleware_home_dir }}/oac'"
+  when: oac_home.stat.exists
 
 - set_fact:
-    osb_already_installed: true
-  when: osb_home.stat.exists
+    oac_already_installed: true
+  when: oac_home.stat.exists
 
-- name: Check the OSB installation JAR file
+- name: Check the OAC installation JAR file
   stat:
-    path: "{{ osb_jar_path }}"
-  register: osb_jar
-  when: not osb_already_installed
+    path: "{{ oac_jar_path }}"
+  register: oac_jar
+  when: not oac_already_installed
 
 - fail:
-    msg: "The OSB installer JAR file is not found !"
-  when: not osb_already_installed and not osb_jar.stat.exists
+    msg: "The OAC installer JAR file is not found !"
+  when: not oac_already_installed and not oac_jar.stat.exists
 
-- name: Check if OSB is already configured
+- name: Check if OAC is already configured
   stat:
-    path: "{{ osb_domain_home }}/config/config.xml"
+    path: "{{ oac_domain_home }}/config/config.xml"
   register: domain_home
   become: yes
   become_user: "{{ oracle.user }}"
 
 - debug:
-    msg: "Oracle Service Bus is configured ! The config file '{{ osb_domain_home }}/config/config.xml' exists already !"
+    msg: "Oracle Service Bus is configured ! The config file '{{ oac_domain_home }}/config/config.xml' exists already !"
   when: domain_home.stat.exists
 
 - set_fact:
-    osb_already_configured: true
+    oac_already_configured: true
   when: domain_home.stat.exists
 
 #
-# Check if OSB schemas were created
+# Check if OAC schemas were created
 #
 - set_fact:
-    osb_schemas_created: true
-  when: (ansible_local.osb.db is defined) and (ansible_local.osb.db.created|bool)
+    oac_schemas_created: true
+  when: (ansible_local.oac.db is defined) and (ansible_local.oac.db.created|bool)

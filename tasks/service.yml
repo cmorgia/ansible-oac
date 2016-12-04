@@ -10,21 +10,21 @@
   become: yes
   become_user: root
   tags:
-    - osb-restart-nodemanager
+    - oac-restart-nodemanager
 
 #
 # Stop services
 #
 
 - name: Stop Managed Servers
-  shell: "{{ osb.scripts_dir }}/osb_control_managed_servers.sh stop >> {{ osb.logs_dir }}/control_managed_servers_$(date +'%F').log 2>&1"
+  shell: "{{ oac.scripts_dir }}/oac_control_managed_servers.sh stop >> {{ oac.logs_dir }}/control_managed_servers_$(date +'%F').log 2>&1"
   tags:
-    - osb-stop-managed-servers
+    - oac-stop-managed-servers
 
 - name: Stop AdminServer
-  shell: "{{ osb.scripts_dir }}/osb_control_admin_server.sh stop >> {{ osb.logs_dir }}/control_admin_server_$(date +'%F').log 2>&1"
+  shell: "{{ oac.scripts_dir }}/oac_control_admin_server.sh stop >> {{ oac.logs_dir }}/control_admin_server_$(date +'%F').log 2>&1"
   tags:
-    - osb-stop-adminserver
+    - oac-stop-adminserver
 
 - name: Stop Nodemanager service
   service:
@@ -33,7 +33,7 @@
   become: yes
   become_user: root
   tags:
-    - osb-stop-nodemanager
+    - oac-stop-nodemanager
 
 #
 # Start services
@@ -46,51 +46,51 @@
   become: yes
   become_user: root
   tags:
-    - osb-start-nodemanager
-    - osb-install-and-init
+    - oac-start-nodemanager
+    - oac-install-and-init
 
 - name: Wait for NodeManager to startup
   wait_for:
-    port: "{{ osb_nodemanager_listen_port }}"
-    host: "{{ osb_nodemanager_listen_address }}"
+    port: "{{ oac_nodemanager_listen_port }}"
+    host: "{{ oac_nodemanager_listen_address }}"
     delay: 4
     timeout: 30
   ignore_errors: true
   tags:
-    - osb-start-nodemanager
-    - osb-restart-nodemanager
-    - osb-install-and-init
+    - oac-start-nodemanager
+    - oac-restart-nodemanager
+    - oac-install-and-init
 
 - name: Start AdminServer
-  shell: "{{ osb.scripts_dir }}/osb_control_admin_server.sh start >> {{ osb.logs_dir }}/control_admin_server_$(date +'%F').log 2>&1"
+  shell: "{{ oac.scripts_dir }}/oac_control_admin_server.sh start >> {{ oac.logs_dir }}/control_admin_server_$(date +'%F').log 2>&1"
   tags:
-    - osb-start-adminserver
-    - osb-install-and-init
+    - oac-start-adminserver
+    - oac-install-and-init
 
 - name: Wait for AdminServer to startup
   wait_for:
-    port: "{{ osb_admin_server_listen_port }}"
-    host: "{{ osb_admin_server_listen_address }}"
+    port: "{{ oac_admin_server_listen_port }}"
+    host: "{{ oac_admin_server_listen_address }}"
     delay: 8
     timeout: 90
   ignore_errors: true
   tags:
-    - osb-start-adminserver
-    - osb-install-and-init
+    - oac-start-adminserver
+    - oac-install-and-init
 
 - name: Start Managed Servers
-  shell: "{{ osb.scripts_dir }}/osb_control_managed_servers.sh start >> {{ osb.logs_dir }}/control_managed_servers_$(date +'%F').log 2>&1"
+  shell: "{{ oac.scripts_dir }}/oac_control_managed_servers.sh start >> {{ oac.logs_dir }}/control_managed_servers_$(date +'%F').log 2>&1"
   tags:
-    - osb-start-managed-servers
-    - osb-install-and-init
+    - oac-start-managed-servers
+    - oac-install-and-init
 
 - name: Wait for Managed Servers to startup
   wait_for:
-    port: "{{ osb_managed_server_listen_port_start }}"
-    host: "{{ osb_managed_server_listen_address }}"
+    port: "{{ oac_managed_server_listen_port_start }}"
+    host: "{{ oac_managed_server_listen_address }}"
     delay: 8
     timeout: 90
   ignore_errors: true
   tags:
-    - osb-start-managed-servers
-    - osb-install-and-init
+    - oac-start-managed-servers
+    - oac-install-and-init

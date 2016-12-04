@@ -1,5 +1,5 @@
 ---
-# This playbook is used to import and export OSB projects with a WLST script
+# This playbook is used to import and export OAC projects with a WLST script
 
 #
 # Export
@@ -18,12 +18,12 @@
     group: "{{ oracle.group }}"
     mode: 0750
   with_items:
-    - { src: "{{ osb_sbconfig_jar_file }}", dest: "{{ osb.config_dir }}/sbconfig.jar" }
-    - { src: "{{ osb_sbconfig_customization_file }}", dest: "{{ osb.config_dir }}/ALSBCustomizationFile.xml" }
+    - { src: "{{ oac_sbconfig_jar_file }}", dest: "{{ oac.config_dir }}/sbconfig.jar" }
+    - { src: "{{ oac_sbconfig_customization_file }}", dest: "{{ oac.config_dir }}/ALSBCustomizationFile.xml" }
   tags:
-    - osb-import-project
+    - oac-import-project
 
-- name: Import OSB project
-  shell: "{{ osb.scripts_dir }}/osb_import_project.sh >> {{ osb.logs_dir }}/osb_import_project_$(date +'%F').log 2>&1"
+- name: Import OAC project
+  shell: "{{ oac.scripts_dir }}/oac_import_project.sh >> {{ oac.logs_dir }}/oac_import_project_$(date +'%F').log 2>&1"
   tags:
-    - osb-import-project
+    - oac-import-project

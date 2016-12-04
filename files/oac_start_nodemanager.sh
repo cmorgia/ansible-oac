@@ -3,7 +3,7 @@
 set -e
 
 # Set environement variables
-source ~/scripts/osb_set_environment_variables.sh
+source ~/scripts/oac_set_environment_variables.sh
 
 export JAVA_OPTIONS=-Djava.security.egd=file:///dev/urandom
 export PATH=${DOMAIN_CONFIGURATION_HOME}/bin/:$PATH

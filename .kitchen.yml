@@ -31,5 +31,5 @@ suites:
       tags:
         - install-java
         - wls-plain-install
-        - osb-create-db-schemas
-        - osb-install-and-init
+        - oac-create-db-schemas
+        - oac-install-and-init

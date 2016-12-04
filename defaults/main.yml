@@ -1,13 +1,13 @@
 ---
 
 #
-# OSB - installation parameters
+# OAC - installation parameters
 #
 oracle_base_dir: '/u01/app/oracle'
-middleware_home_dir: "{{ oracle_base_dir }}/product/middleware"
-osb_installation_type: 'Service Bus'
-osb_jar_path: ''
-osb_version: '12c'
+middleware_home_dir: "{{ oracle_base_dir }}/product/middleware1213"
+oac_installation_type: 'Enterprise Repository'
+oac_jar_path: ''
+oac_version: '12c'
 
 #
 # Oracle DB - connection parameters
@@ -20,11 +20,11 @@ oracle_db_password: 'password'
 oracle_db_role: 'SYSDBA'
 
 #
-# OSB - Schemas names
+# OAC - Schemas names
 #
-osb_rcu_schema_prefix: 'OSB'
-osb_schemas_common_password: 'password'
-osb_rcu_components:
+oac_rcu_schema_prefix: 'OAC'
+oac_schemas_common_password: 'password'
+oac_rcu_components:
   - MDS
   - IAU
   - IAU_APPEND
@@ -33,44 +33,45 @@ osb_rcu_components:
   - UCSUMS
   - WLS
   - STB
-  - SOAINFRA
+  - OER
+  - OAC
 
 #
-# OSB - cluster parameters
+# OAC - cluster parameters
 #
-osb_domain_name: 'osb_domain'
-osb_domain_home: "{{ middleware_home_dir }}/user_projects/domains/{{ osb_domain_name }}"
-osb_cluster_name: 'osb_cluster'
-osb_cluster_nodes:
+oac_domain_name: 'oac_domain'
+oac_domain_home: "{{ middleware_home_dir }}/user_projects/domains/{{ oac_domain_name }}"
+oac_cluster_name: 'oac_cluster'
+oac_cluster_nodes:
   - "localhost"
 
 #
-# OSB - nodemanager parameters
+# OAC - nodemanager parameters
 #
-osb_nodemanager_home: "{{ middleware_home_dir }}/user_projects/nodemanagers/{{ osb_domain_name }}"
-osb_nodemanager_listen_address: 'localhost'
-osb_nodemanager_listen_port: 5556
-osb_nodemanager_connection_mode: 'ssl'
+oac_nodemanager_home: "{{ middleware_home_dir }}/user_projects/nodemanagers/{{ oac_domain_name }}"
+oac_nodemanager_listen_address: 'localhost'
+oac_nodemanager_listen_port: 5557
+oac_nodemanager_connection_mode: 'ssl'
 
 #
-# OSB - AdminServer parameters
+# OAC - AdminServer parameters
 #
-osb_admin_server_name: 'AdminServer'
-osb_admin_server_listen_address: "localhost"
-osb_admin_server_listen_port: 7001
-osb_admin_username: 'weblogic'
-osb_admin_password: 'manager1'
+oac_admin_server_name: 'AdminServer'
+oac_admin_server_listen_address: "localhost"
+oac_admin_server_listen_port: 7002
+oac_admin_username: 'weblogic'
+oac_admin_password: 'manager1'
 
 #
-# OSB - Managed servers parameters
+# OAC - Managed servers parameters
 #
-osb_managed_servers_per_machine: 1
-osb_managed_server_listen_port_start: 8000
-osb_managed_server_listen_address: "localhost"
+oac_managed_servers_per_machine: 1
+oac_managed_server_listen_port_start: 9000
+oac_managed_server_listen_address: "localhost"
 
 #
-# Import OSB project options
+# Import OAC project options
 #
-osb_sbconfig_jar_file: '/tmp/sbconfig.jar'
-osb_sbconfig_customization_file: '/tmp/ALSBCustomizationFile.xml'
-osb_sbconfig_project: 'default'
+oac_sbconfig_jar_file: '/tmp/sbconfig.jar'
+oac_sbconfig_customization_file: '/tmp/ALSBCustomizationFile.xml'
+oac_sbconfig_project: 'default'

@@ -1,0 +1,21 @@
+---
+
+- name: Patch OAC
+  shell: "opatch apply -silent {{ item }}> {{ oac.logs_dir }}/patch_oac_$(date +'%F').log 2>&1"
+  environment:
+    JAVA_HOME: /usr/java/default
+    ORACLE_HOME: "{{ middleware_home_dir }}"
+    PATH: "{{ middleware_home_dir }}/OPatch:{{ ansible_env.PATH }}"
+  register: oac_patch_cmd
+  when: not oac_patched
+  tags:
+    - oac-patch
+  with_items:
+    - "/files/p18718889_121300_Generic.zip"
+    - "/files/p18791727_121300_Generic.zip"
+
+- set_fact:
+    oac_patched: true
+  when: (oac_patch_cmd is defined) and (not oac_patch_cmd.rc)
+  tags:
+    - oac-patch
