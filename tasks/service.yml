@@ -5,7 +5,7 @@
 #
 - name: Restart Nodemanager service
   service:
-    name: nodemanager
+    name: nodemanager-oac
     state: restarted
   become: yes
   become_user: root
@@ -28,7 +28,7 @@
 
 - name: Stop Nodemanager service
   service:
-    name: nodemanager
+    name: nodemanager-oac
     state: stopped
   become: yes
   become_user: root
@@ -41,7 +41,7 @@
 
 - name: Start Nodemanager service
   service:
-    name: nodemanager
+    name: nodemanager-oac
     state: started
   become: yes
   become_user: root

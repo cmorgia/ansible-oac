@@ -39,6 +39,8 @@
 - include: service.yml
   become: yes
   become_user: "{{ oracle.user }}"
+  tags:
+    - oac-start
 
 - name: Add custom facts for OAC
   template:

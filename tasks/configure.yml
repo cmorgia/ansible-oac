@@ -15,17 +15,24 @@
     - { src: oac_environment.properties.j2, dest: "{{ oac.config_dir }}/oac_environment.properties" }
 
 #
-# Create and configure the OAC cluster
+# Create and configure the OAC domain
 #
 
-- name: Create the OAC cluster
-  shell: "{{ oac.scripts_dir }}/oac_create_basic_domain_service.sh > {{ oac.logs_dir }}/create_oac_cluster_$(date +'%F').log 2>&1"
-  register: create_cluster_cmd
+- name: Create the OAC domain
+  shell: "{{ middleware_home_dir }}/oracle_common/common/bin/unpack.sh -template=/files/who_oac_custom_template.jar -domain={{  oac_domain_home }} -user_name={{  oac_admin_username }} -password={{  oac_admin_password }} -log_priority=debug -log={{ oac.logs_dir }}/create_oac_domain_$(date +'%F').log 2>&1"
+  register: create_domain_cmd
 
 
 - name: Create AdminServer securtiy directory
   file:
     path: "{{ oac_domain_home }}/servers/AdminServer/security"
+    state: directory
+    owner: "{{ oracle.user }}"
+    group: "{{ oracle.group }}"
+
+- name: Create NodeManager  directory
+  file:
+    path: "{{ oac_nodemanager_home }}"
     state: directory
     owner: "{{ oracle.user }}"
     group: "{{ oracle.group }}"
@@ -48,7 +55,7 @@
 - name: Copy NodeManager systemd script
   template:
     src: nodemanager.service.j2
-    dest: /etc/systemd/system/nodemanager.service
+    dest: /etc/systemd/system/nodemanager-oac.service
     mode: 0664
   when: ansible_virtualization_type != 'docker'
   become: yes
@@ -56,7 +63,7 @@
   
 - name: Enable Nodemanager service
   service:
-    name: nodemanager
+    name: nodemanager-oac
     enabled: yes
   when: ansible_virtualization_type != 'docker'
   become: yes
@@ -64,5 +71,5 @@
   
 - set_fact:
     oac_already_configured: true
-  when: create_cluster_cmd.rc == 0
+  when: create_domain_cmd.rc == 0
 
