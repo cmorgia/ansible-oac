@@ -31,15 +31,11 @@
     group: "{{ oracle.group }}"
     mode: 0750
   with_items:
-    - { src: oac_create_basic_domain.py, dest: "{{ oac.scripts_dir }}/oac_create_basic_domain.py" }
-    - { src: oac_create_basic_domain_service.sh, dest: "{{ oac.scripts_dir }}/oac_create_basic_domain_service.sh" }
     - { src: oac_control_admin_server.py, dest: "{{ oac.scripts_dir }}/oac_control_admin_server.py" }
     - { src: oac_control_admin_server.sh, dest: "{{ oac.scripts_dir }}/oac_control_admin_server.sh" }
     - { src: oac_control_managed_servers.py, dest: "{{ oac.scripts_dir }}/oac_control_managed_servers.py" }
     - { src: oac_control_managed_servers.sh, dest: "{{ oac.scripts_dir }}/oac_control_managed_servers.sh" }
     - { src: oac_start_nodemanager.sh, dest: "{{ oac.scripts_dir }}/oac_start_nodemanager.sh" }
-    - { src: oac_import_project.py, dest: "{{ oac.scripts_dir }}/oac_import_project.py" }
-    - { src: oac_import_project.sh, dest: "{{ oac.scripts_dir }}/oac_import_project.sh" }
 
 - name: Prepare OAC installation response file
   template:

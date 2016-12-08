@@ -25,9 +25,4 @@
       oac_admin_server_listen_address: '192.168.33.101'
       oac_managed_server_listen_address: '192.168.33.101'
 
-    - role: ansible-oag
-      oag_prefix: "{{ middleware_home_dir }}"
-      oag_username: 'admin'
-      oag_password: 'password'
-      oag_hostname: '192.168.33.101'
-      oag_port: '8090'
+    
