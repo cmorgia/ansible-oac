@@ -18,11 +18,13 @@
 
 - name: Stop Managed Servers
   shell: "{{ oac.scripts_dir }}/oac_control_managed_servers.sh stop >> {{ oac.logs_dir }}/control_managed_servers_$(date +'%F').log 2>&1"
+  ignore_errors: true
   tags:
     - oac-stop-managed-servers
 
 - name: Stop AdminServer
   shell: "{{ oac.scripts_dir }}/oac_control_admin_server.sh stop >> {{ oac.logs_dir }}/control_admin_server_$(date +'%F').log 2>&1"
+  ignore_errors: true
   tags:
     - oac-stop-adminserver
 
@@ -30,6 +32,7 @@
   service:
     name: nodemanager-oac
     state: stopped
+  ignore_errors: true  
   become: yes
   become_user: root
   tags:
