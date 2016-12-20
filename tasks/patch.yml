@@ -11,8 +11,8 @@
   tags:
     - oac-patch
   with_items:
-    - "/files/p18718889_121300_Generic.zip"
-    - "/files/p18791727_121300_Generic.zip"
+    - "/vagrant/files/p18718889_121300_Generic.zip"
+    - "/vagrant/files/p18791727_121300_Generic.zip"
 
 - set_fact:
     oac_patched: true

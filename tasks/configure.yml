@@ -19,7 +19,7 @@
 #
 
 - name: Create the OAC domain
-  shell: "{{ middleware_home_dir }}/oracle_common/common/bin/unpack.sh -template=/files/who_oac_custom_template.jar -domain={{  oac_domain_home }} -user_name={{  oac_admin_username }} -password={{  oac_admin_password }} -log_priority=debug -log={{ oac.logs_dir }}/create_oac_domain_$(date +'%F').log 2>&1"
+  shell: "{{ middleware_home_dir }}/oracle_common/common/bin/unpack.sh -template=/vagrant/files/who_oac_custom_template.jar -domain={{  oac_domain_home }} -user_name={{  oac_admin_username }} -password={{  oac_admin_password }} -log_priority=debug -log={{ oac.logs_dir }}/create_oac_domain_$(date +'%F').log 2>&1"
   register: create_domain_cmd
 
 

@@ -8,17 +8,17 @@
       java_version: 8
       java_jdk_type: 'oracle'
       oracle_jdk_rpm_package: 'jdk-8u60-linux-x64.rpm'
-      rpm_download_directory: '/files'
+      rpm_download_directory: '/vagrant/files'
       java_set_as_default: true
 
     - role: ansible-weblogic
-      weblogic_jar_path: '/files/fmw_12.2.1.2.0_infrastructure.jar'
+      weblogic_jar_path: '/vagrant/files/fmw_12.2.1.2.0_infrastructure.jar'
       weblogic_quick_installation: false
       weblogic_installation_type: 'Fusion Middleware Infrastructure'
       weblogic_domain_name: 'oac_domain'
 
     - role: ansible-oac
-      oac_jar_path: '/files/fmw_12.2.1.2.0_oac.jar'
+      oac_jar_path: '/vagrant/files/fmw_12.2.1.2.0_oac.jar'
       oracle_db_address: '127.0.0.1'
       oracle_db_sid: 'orcl'
       oracle_db_password: 'password'
