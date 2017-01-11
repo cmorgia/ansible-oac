@@ -42,6 +42,12 @@
   tags:
     - oac-start
 
+- include: harvester.yml
+  become: yes
+  become_user: "{{ oracle.user }}"
+  tags:
+    - oac-harvester-config
+    
 - name: Add custom facts for OAC
   template:
     src: oac.fact.j2

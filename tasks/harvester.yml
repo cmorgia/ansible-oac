@@ -1,0 +1,53 @@
+---
+
+- name: Creates directory
+  file: path={{oac_fmw_to_harvest}}/oer/tools/osbharvester state=directory
+
+- unarchive:
+    src: '{{middleware_home_dir}}/oer/modules/tools/solutions/12.1.3.0.0-OSB12c-Harvester.zip'
+    dest: '{{oac_fmw_to_harvest}}/oer/tools/osbharvester'
+    remote_src: True
+
+- file:
+    path: '{{oac_fmw_to_harvest}}/oer/tools/osbharvester/{{ item }}'
+    mode: 'a+rwx'
+  with_items:
+    - 'encrypt.sh'
+    - 'osb-harvest.sh'
+    - 'runant.sh'
+    - 'setenv.sh'
+    - 'wlst.sh'
+
+- name: Convert line termination
+  shell: "dos2unix {{oac_fmw_to_harvest}}/oer/tools/osbharvester/{{ item }}"
+  with_items:
+    - 'encrypt.sh'
+    - 'osb-harvest.sh'
+    - 'runant.sh'
+    - 'setenv.sh'
+    - 'wlst.sh'
+
+- lineinfile:
+    dest: '{{oac_fmw_to_harvest}}/oer/tools/osbharvester/setenv.sh'
+    insertbefore: "^export CLASSPATH LOCALCLASSPATH"
+    line: 'CLASSPATH="$CLASSPATH$CLASSPATHSEP$MW_HOME/oracle_common/modules/oracle.odl/ojdl.jar"'
+    state: present
+
+- lineinfile:
+    dest: '{{oac_fmw_to_harvest}}/oer/tools/osbharvester/setenv.sh'
+    insertbefore: "^export CLASSPATH LOCALCLASSPATH"
+    line: 'CLASSPATH="$CLASSPATH$CLASSPATHSEP$MW_HOME/oracle_common/modules/com.bea.core.xquery_1.8.0.0.jar"'
+    state: present
+
+- name: Copy HarvesterSettings.xml
+  template:
+    src: HarvesterSettings.xml
+    dest: '{{oac_fmw_to_harvest}}/oer/tools/osbharvester/HarvesterSettings.xml'
+    
+- name: Encrypt passwords
+  command: './encrypt.sh {{item}} {{item}}'
+  args:
+    chdir: '{{oac_fmw_to_harvest}}/oer/tools/osbharvester'
+  with_items:
+    - '{{oac_fmw_to_harvest}}/oer/tools/osbharvester/HarvesterSettings.xml'
+
