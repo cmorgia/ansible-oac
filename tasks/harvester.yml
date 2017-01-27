@@ -52,7 +52,7 @@
     - '{{oac_fmw_to_harvest}}/oer/tools/osbharvester/HarvesterSettings.xml'
 
 - cron:
-  name: "OSB Harvester"
-  minute: "0,30"
-  job: "cd {{oac_fmw_to_harvest}}/oer/tools/osbharvester/ && ./osb-harvest.sh >> {{ oac.logs_dir }}/oac_osb_harvester.log 2>&1"
+    name: "OSB Harvester"
+    minute: "0,30"
+    job: "cd {{oac_fmw_to_harvest}}/oer/tools/osbharvester/ && ./osb-harvest.sh >> {{ oac.logs_dir }}/oac_osb_harvester.log 2>&1"
   
